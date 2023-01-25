@@ -15,9 +15,8 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import androidx.test.espresso.ViewInteraction;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.rule.ActivityTestRule;
 
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Description;
@@ -27,17 +26,18 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import io.qameta.allure.android.runners.AllureAndroidJUnit4;
+
 @LargeTest
-@RunWith(AndroidJUnit4.class)
+@RunWith(AllureAndroidJUnit4.class)
 public class MainActivityTest {
 
     @Rule
-    public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
-            new ActivityScenarioRule<>(MainActivity.class);
+    public ActivityTestRule<MainActivity> mActivityScenarioRule =
+            new ActivityTestRule<MainActivity>(MainActivity.class);
 
     @Test
     public void testMainActivityText() {
-
         ViewInteraction textView = onView(withId(R.id.text_home));
         textView.check(matches(isDisplayed()));
         textView.check(matches(withText("This is home fragment")));
@@ -46,20 +46,17 @@ public class MainActivityTest {
     @Test
     public void testNavigationDrawerHome() {
         openMenu();
-
         ViewInteraction linearLayoutCompatHome = onView(withId(R.id.nav_home));
         linearLayoutCompatHome.check(matches(isDisplayed()));
         ViewInteraction checkedTextHomeView = onView(
                 CoreMatchers.allOf(withId(androidx.navigation.ui.R.id.design_menu_item_text), withText("Home")
                 ));
         checkedTextHomeView.check(matches(isDisplayed()));
-
     }
 
     @Test
     public void testNavigationDrawerGallery() {
         openMenu();
-
         ViewInteraction linearLayoutCompatGallery = onView(withId(R.id.nav_gallery));
         linearLayoutCompatGallery.check(matches(isDisplayed()));
         ViewInteraction checkedTextGalleryView = onView(
@@ -71,7 +68,6 @@ public class MainActivityTest {
     @Test
     public void testNavigationDrawerSladeshow() {
         openMenu();
-
         ViewInteraction linearLayoutCompatSlideshow = onView(withId(R.id.nav_slideshow));
         linearLayoutCompatSlideshow.check(matches(isDisplayed()));
         ViewInteraction checkedTextSlideshowView = onView(
@@ -86,7 +82,6 @@ public class MainActivityTest {
         ViewInteraction navigationMenuItemView = onView(withId(R.id.nav_slideshow));
         navigationMenuItemView.check(matches(isDisplayed()));
         navigationMenuItemView.perform(click());
-
         ViewInteraction textView = onView(withId(R.id.text_slideshow));
         textView.check(matches(isDisplayed()));
         textView.check(matches(withText("This is slideshow fragment")));
@@ -94,7 +89,6 @@ public class MainActivityTest {
 
 
     private void openMenu() {
-
         ViewInteraction appCompatImageButton = onView(
                 CoreMatchers.allOf(withContentDescription("Open navigation drawer"),
                         childAtPosition(
@@ -106,7 +100,6 @@ public class MainActivityTest {
                                 1),
                         isDisplayed()));
         appCompatImageButton.perform(click());
-
     }
 
     private static Matcher<View> childAtPosition(
